@@ -33,13 +33,13 @@ def download_image(url, filepath):
 
 async def main():
     load_dotenv()
-    bot_token = os.getenv("BOT_TOKEN")
-    chat_id = os.getenv("CHAT_ID")
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    channel_id = os.getenv("TELEGRAM_CHANNEL_ID")
 
     if not bot_token:
-        raise ValueError("Критическая ошибка: Переменная окружения BOT_TOKEN не задана.")
-    if not chat_id:
-        raise ValueError("Критическая ошибка: Переменная окружения CHAT_ID не задана.")
+        raise ValueError("Критическая ошибка: Переменная окружения TELEGRAM_BOT_TOKEN не задана.")
+    if not channel_id:
+        raise ValueError("Критическая ошибка: Переменная окружения TELEGRAM_CHANNEL_ID не задана.")
 
     total_comics = fetch_total_comics_count()
     comic_id = random.randint(1, total_comics)
@@ -50,7 +50,7 @@ async def main():
         bot = Bot(token=bot_token)
         async with bot:
             with open(TEMP_FILENAME, "rb") as photo_file:
-                await bot.send_photo(chat_id=chat_id, photo=photo_file, caption=comic["alt"])
+                await bot.send_photo(chat_id=channel_id, photo=photo_file, caption=comic["alt"])
     finally:
         if os.path.exists(TEMP_FILENAME):
             os.remove(TEMP_FILENAME)
